@@ -114,7 +114,7 @@ function closureState(r){
 /* Lancement : annuaire vide. La fiche d'exemple reste visible pour les restaurateurs (non référencée). */
 const EXAMPLE = R.find(r=>r.slug==="la-maree-haute");
 EXAMPLE.slug="exemple"; EXAMPLE.example=true;
-window.__miette={R,PLACES,EXAMPLE}; /* lu par le pré-rendu (e-mail « nouveau restaurant ») */
+window.__miette={R,PLACES,EXAMPLE,svg}; /* lu par le pré-rendu (e-mail « nouveau restaurant ») */
 R.splice(0,R.length);
 Object.keys(bySlug).forEach(k=>delete bySlug[k]); bySlug.exemple=EXAMPLE;
 const avg = r=>(r.price[0]+r.price[1])/2;
