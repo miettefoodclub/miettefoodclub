@@ -742,6 +742,7 @@ footer .logo img{height:auto;width:min(340px,100%)}
 .fc-txt h3{font-family:var(--f-display);font-weight:400;font-size:clamp(1.6rem,2.6vw,2.4rem);line-height:1.02;margin:0}
 .fc-txt p{margin:0;display:flex;flex-wrap:wrap;gap:6px 14px;color:var(--muted);font-weight:600;font-size:.95rem}
 .fc-txt p b{color:var(--orange-ink)}
+.fc-ann{font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;border:1px solid currentColor;border-radius:999px;padding:1px 8px;align-self:center;opacity:.8}
 .fc-badge.fc-ftb{background:var(--ink,#2b1a12);color:#fff}
 .fc-badge.fc-ftb{top:auto;bottom:16px;right:auto;left:18px}
 .fc-open{display:none}

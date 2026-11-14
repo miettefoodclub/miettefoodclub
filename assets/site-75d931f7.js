@@ -130,7 +130,7 @@ function ph(r,i,label){
 const priceTxt = r=>`${r.price[0]} à ${r.price[1]} €`;
 function badgeRow(r){
   let b = "";
-  if(r.plan==="premium") b += `<span class="badge b-une">★ À la une</span>`;
+  if(r.plan==="premium") b += `<span class="badge b-une" title="Mise en avant payante (forfait Premium)">★ À la une · annonce</span>`;
   if(r.offre) b += `<span class="badge b-offre"><span class="pastille"></span>Offre Miette</span>`;
   if(r.closures && closureState(r).now) b += `<span class="badge b-conges">En congés</span>`;
   return b;
@@ -175,7 +175,7 @@ function homeCarousel(){
   <section class="fc-sec">
     <div class="wrap">
       <div class="sec-head">
-        <div><p class="eyebrow">À la une</p><h2 class="rv">Les tables du moment</h2></div>
+        <div><p class="eyebrow">À la une · annonces</p><h2 class="rv">Les tables du moment</h2></div>
         <p class="fc-hint">bougez la souris pour parcourir <svg viewBox="0 0 44 18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 9h38M33 2l7 7-7 7"/></svg></p>
       </div>
     </div>
@@ -183,7 +183,7 @@ function homeCarousel(){
       <div class="fc-track" id="fc-track">
         ${list.map((r,i)=>{const st=r._ft?r.sched[todayIdx()]:null;return `<a class="fc-card" href="/${r._ft?"foodtrucks":"restaurants"}/${r.slug}/" style="${fl(i)}">
           <div class="fc-vis" style="--a:${r.col[0]};--b:${r.col[1]}"><span class="fc-num">${String(i+1).padStart(2,"0")}</span>${r.offre?`<span class="fc-badge"><i></i>Offre Miette</span>`:""}${r._ft?`<span class="fc-badge fc-ftb">Foodtruck</span>`:""}${svg(r._ft?r.kind:r.kinds[0])}</div>
-          <div class="fc-txt"><h3>${r.name}</h3><p><span>${r.cuisine}</span><span>${r._ft?(st?`Aujourd'hui : ${st.commune}`:"Voir son planning"):(r.station||r.commune)}</span><b>${r.price[0]} à ${r.price[1]} €</b></p><span class="fc-open">Ouvrir la fiche ${ic.arrow}</span></div></a>`}).join("")}
+          <div class="fc-txt"><h3>${r.name}</h3><p><span class="fc-ann" title="Mise en avant payante (forfait Premium)">Annonce</span><span>${r.cuisine}</span><span>${r._ft?(st?`Aujourd'hui : ${st.commune}`:"Voir son planning"):(r.station||r.commune)}</span><b>${r.price[0]} à ${r.price[1]} €</b></p><span class="fc-open">Ouvrir la fiche ${ic.arrow}</span></div></a>`}).join("")}
         <a class="fc-card fc-you" href="/partenaire/" style="${fl(list.length)}"><div class="fc-vis"><div><b>Votre restaurant ou foodtruck ici</b><p>${10-premiums.length} places Premium encore libres sur 10</p></div></div></a>
       </div>
       <div class="fc-bar"><i id="fc-bar"></i></div>
@@ -370,7 +370,7 @@ function dirFTStrip(){
   const fts=FT.filter(f=>f.plan==="premium");
   if(!fts.length) return "";
   const d=todayIdx();
-  return `<section class="dir-ft rv"><div class="dir-ft-head"><p class="eyebrow">À la une · foodtrucks</p><a href="/foodtrucks/">Tous les foodtrucks ${ic.arrow}</a></div>
+  return `<section class="dir-ft rv"><div class="dir-ft-head"><p class="eyebrow">À la une · foodtrucks (annonces)</p><a href="/foodtrucks/">Tous les foodtrucks ${ic.arrow}</a></div>
     <div class="dir-ft-row">${fts.map(f=>ftCard(f,d)).join("")}</div></section>`;
 }
 function pageDir(){
@@ -379,7 +379,7 @@ function pageDir(){
   <div class="wrap page-head">
     <p class="crumbs"><a href="/">Accueil</a> › Annuaire</p>
     <h1 class="rv">Les restaurants de la Charente-Maritime</h1>
-    <p class="muted rv d1" style="margin-top:12px;max-width:40em">Cherchez par nom, commune, station ou envie. Les restaurants partenaires « À la une » apparaissent en premier.</p>
+    <p class="muted rv d1" style="margin-top:12px;max-width:40em">Cherchez par nom, commune, station ou envie. Toutes les fiches sont des établissements partenaires abonnés ; les fiches « À la une » (mise en avant payante) apparaissent en premier, puis les autres par ordre alphabétique. <a href="/classement/" style="text-decoration:underline">Comment fonctionne le classement</a></p>
   </div>
   <div class="wrap dir">
     <form class="filters collapsed" id="filters" onsubmit="return false">
@@ -451,7 +451,7 @@ function pageResto(r){
   <div class="fiche-hero">
     <div class="wrap">
       <p class="crumbs"><a href="/">Accueil</a> › <a href="/annuaire/">Annuaire</a> › <a href="/annuaire/" data-commune="${r.commune}">${r.commune}</a> › ${r.name}</p>
-      <div class="row"><span class="badge b-part">${svg("tart",4).replace('<svg','<svg width="14" height="14"')} Restaurant partenaire Miette</span>${isP?`<span class="badge b-une">★ À la une</span>`:""}</div>
+      <div class="row"><span class="badge b-part">${svg("tart",4).replace('<svg','<svg width="14" height="14"')} Restaurant partenaire Miette</span>${isP?`<span class="badge b-une" title="Mise en avant payante (forfait Premium)">★ À la une · annonce</span>`:""}</div>
       <div class="name-row rv"><h1>${r.name}</h1><button type="button" class="heart" data-fav="${r.slug}" aria-pressed="${isFav(r.slug)}" aria-label="${isFav(r.slug)?"Retirer de mes favoris":"Ajouter à mes favoris"}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5s-7.5-4.6-9.3-9.2C1.5 8.2 3.4 4.5 7 4.5c2.1 0 3.6 1.2 5 3 1.4-1.8 2.9-3 5-3 3.6 0 5.5 3.7 4.3 6.8-1.8 4.6-9.3 9.2-9.3 9.2z" stroke-linejoin="round"/></svg></button></div>
       <div class="row meta"><span><b style="color:var(--ink)">${r.commune}</b>${r.station?` · ${r.station}`:""}</span><span>${r.cuisine}</span><span>Prix moyen <span class="price" style="color:var(--ink)">${priceTxt(r)}</span> par personne</span></div>
       ${(()=>{const cs=closureState(r);
@@ -710,10 +710,7 @@ function bindPartner(){
     const mail=$("#c-mail").value.trim();
     // 1) enregistrement dans Supabase (la demande n'est jamais perdue)
     const saved=SB?SB.from("contact_requests").insert({etablissement:$("#c-resto").value.trim().slice(0,200),email:mail.slice(0,200),telephone:($("#c-tel")?$("#c-tel").value.trim():"").slice(0,40),details:fields}).then(({error})=>{if(error)throw error;return true;}):Promise.reject(new Error("nosb"));
-    // 2) copie par e-mail (au mieux)
-    const mailed=fetch("https://formsubmit.co/ajax/"+((window.MIETTE_CONFIG||{}).contactEmail||"miettefoodclub@gmail.com"),{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},
-      body:JSON.stringify(Object.assign({_subject:`Miette · nouvelle demande : ${$("#c-resto").value}`,_template:"table",_captcha:"false",_replyto:mail},fields))}).then(r=>r.json()).then(j=>{if(!(j.success===true||j.success==="true"))throw new Error("mail");return true;});
-    Promise.allSettled([saved,mailed]).then(([a,b])=>{if(a.status!=="fulfilled"&&b.status!=="fulfilled")throw new Error("send");
+    Promise.allSettled([saved]).then(([a])=>{if(a.status!=="fulfilled")throw new Error("send");
     $("#c-err").textContent="";$("#contact-form").hidden=true;
     const d=$("#c-done");d.hidden=false;
     d.innerHTML=`<b>Merci, ${$("#c-resto").value} !</b>${isTest?`<p style="margin-top:6px">Votre demande de test gratuit de 2 mois est bien prise en compte. Je vous recontacte pour mettre votre fiche en ligne.</p>`:""}<p style="margin-top:6px">Votre message est bien parti. Réponse sous 48 h ouvrées, par e-mail ou par téléphone.</p>`;
@@ -749,7 +746,7 @@ let ftDay=null;
 function ftCard(f,d){
   const st=f.sched[d];
   return `<a class="ft-card rv" href="/foodtrucks/${f.slug}/">
-    <div class="ph" style="--a:${f.col[0]};--b:${f.col[1]};aspect-ratio:16/10;border-radius:16px">${svg(f.kind)}${f.offre||f.plan==="premium"?`<div class="badges">${f.plan==="premium"?`<span class="badge b-une">★ À la une</span>`:""}${f.offre?`<span class="badge b-offre"><span class="pastille"></span>Offre Miette</span>`:""}</div>`:""}</div>
+    <div class="ph" style="--a:${f.col[0]};--b:${f.col[1]};aspect-ratio:16/10;border-radius:16px">${svg(f.kind)}${f.offre||f.plan==="premium"?`<div class="badges">${f.plan==="premium"?`<span class="badge b-une" title="Mise en avant payante (forfait Premium)">★ À la une · annonce</span>`:""}${f.offre?`<span class="badge b-offre"><span class="pastille"></span>Offre Miette</span>`:""}</div>`:""}</div>
     <h3>${f.name}</h3><p class="ft-muted">${f.cuisine} · <span class="price">${f.price[0]} à ${f.price[1]} €</span></p>
     ${st?`<p class="ft-where"><b>${st.commune}</b> · ${st.lieu}<br><span>${st.h}</span></p>`:`<p class="ft-where off">Pas de sortie ce jour-là</p>`}
   </a>`;
@@ -1138,16 +1135,18 @@ function updFavN(){const n=$("#fav-n");if(!n)return;n.textContent=favs.size;n.hi
 /* pages légales (modèles à compléter) */
 const T = s=>`<span class="todo">[${s}]</span>`;
 const MAIL='<b>miettefoodclub@gmail.com</b>';
-const MAJ=`<p class="muted" style="font-size:.88rem">Dernière mise à jour : 13 novembre 2026</p>`;
+const MAJ=`<p class="muted" style="font-size:.88rem">Dernière mise à jour : 14 novembre 2026</p>`;
 const LEGAL = {
  mentions:["Mentions légales",`${MAJ}
 <p>Conformément aux articles 6-III et 19 de la loi n° 2004-575 du 21 juin 2004 pour la confiance dans l'économie numérique (LCEN), voici les informations sur l'éditeur et l'hébergeur du site miettefoodclub.com.</p>
 <h2>Éditeur du site</h2>
-<p>Le site miettefoodclub.com est édité par Soline VALADON, entrepreneur individuel (micro-entreprise), exerçant sous le nom commercial <b>Miette - FoodClub</b>.</p>
+<p>Le site miettefoodclub.com est édité par <b>Soline VALADON EI</b> (entrepreneur individuel, micro-entreprise), exerçant sous le nom commercial <b>Miette - FoodClub</b>.</p>
 <ul><li>Adresse : 33 rue de l'Atlantique, 17530 Arvert</li><li>SIRET : 948 614 094 00027 (SIREN 948 614 094, immatriculation au Registre national des entreprises)</li><li>TVA non applicable, article 293 B du Code général des impôts</li><li>E-mail : ${MAIL}</li><li>Téléphone : 06 24 24 32 98</li></ul>
 <p>Directrice de la publication : Soline VALADON.</p>
+<h2>Fiches payantes et classement</h2>
+<p>Toutes les fiches publiées sur Miette sont celles d'établissements partenaires abonnés. Les fiches « À la une » sont des mises en avant payantes (forfait Premium), signalées par le mot « annonce ». Le détail figure sur la page <a href="/classement/">Fonctionnement et classement des fiches</a>.</p>
 <h2>Hébergement</h2>
-<p>GitHub, Inc. (service GitHub Pages), 88 Colin P. Kelly Jr. Street, San Francisco, CA 94107, États-Unis. Site : github.com.</p>
+<p>GitHub, Inc. (service GitHub Pages), 88 Colin P. Kelly Jr. Street, San Francisco, CA 94107, États-Unis. Téléphone : +1 877 448 4820. Site : github.com.</p>
 <h2>Objet du site</h2>
 <p>Miette - FoodClub est un annuaire en ligne des restaurants et foodtrucks de Charente-Maritime. Il présente pour chaque établissement partenaire ses informations pratiques et sa carte. Le site n'affiche ni notes ni avis de clients et ne prend aucune réservation ni commande.</p>
 <h2>Informations sur les restaurants</h2>
@@ -1168,14 +1167,14 @@ const LEGAL = {
 <h2>Responsable du traitement</h2>
 <p>Soline VALADON, Miette - FoodClub, 33 rue de l'Atlantique, 17530 Arvert. Contact : ${MAIL}, 06 24 24 32 98.</p>
 <h2>Les données collectées et leur usage</h2>
-<p><b>1. Formulaire « Référencer mon restaurant »</b><br>Données : nom de l'établissement, type (restaurant ou foodtruck), commune, nom, e-mail, téléphone, forfait souhaité, message.<br>Usage : vous recontacter pour présenter Miette et préparer votre fiche.<br>Base légale : mesures précontractuelles prises à votre demande.<br>Les demandes sont enregistrées dans la base de données du site (Supabase) et transmises par e-mail à l'éditeur. Durée : 3 ans après le dernier contact si aucun contrat n'est signé.</p>
+<p><b>1. Formulaire « Référencer mon restaurant »</b><br>Données : nom de l'établissement, type (restaurant ou foodtruck), commune, nom, e-mail, téléphone, forfait souhaité, message.<br>Usage : vous recontacter pour présenter Miette et préparer votre fiche.<br>Base légale : mesures précontractuelles prises à votre demande.<br>Les demandes sont enregistrées dans la base de données du site (Supabase), puis l'éditeur en est averti par un e-mail envoyé par Brevo. Durée : 3 ans après le dernier contact si aucun contrat n'est signé.</p>
 <p><b>2. Établissements partenaires</b><br>Données : coordonnées du contact, informations de facturation, échanges par e-mail.<br>Usage : gestion de l'abonnement, mise à jour de la fiche, envoi du rapport de statistiques trimestriel.<br>Base légale : exécution du contrat ; obligations comptables.<br>Durée : pendant le contrat, puis 5 ans ; les factures sont gardées 10 ans (obligation légale).</p>
 <p><b>3. Comptes clients</b><br>Données : prénom, e-mail, mot de passe chiffré, commune (facultative), restaurants favoris, préférences de notification, historique des Offres Miette utilisées.<br>Usage : gérer votre compte, vos favoris et vos avantages ; vous prévenir par e-mail des nouveaux restaurants de votre commune et des communes voisines si vous l'avez demandé (chaque e-mail contient un lien pour ne plus les recevoir).<br>Base légale : exécution du service que vous demandez ; votre consentement pour les notifications.<br>Durée : tant que le compte est actif ; il est supprimé après 3 ans sans connexion, après un e-mail de prévenance. Vous pouvez aussi supprimer votre compte vous-même à tout moment depuis « Mon compte » : vos données (profil, favoris, historique des Offres Miette) sont alors effacées immédiatement. L'historique des Offres Miette sert à appliquer les règles de l'offre (une fois par mois et par établissement, trois établissements par mois) ; les tentatives de code erronées sont enregistrées pour la sécurité et ne servent qu'à bloquer la validation pendant 15 minutes après trois erreurs.</p>
 <p><b>4. Statistiques de visite</b><br>Miette compte elle-même, sans outil de mesure d'audience tiers et sans cookie, le nombre de visites de chaque fiche et le nombre de clics sur le téléphone, le site ou le menu d'un établissement. Seuls des totaux par fiche et par jour sont enregistrés : aucune adresse IP, aucun identifiant, aucun profil de visiteur n'est conservé.<br>Usage : produire le rapport de statistiques envoyé chaque trimestre aux établissements, et améliorer le site.<br>Base légale : intérêt légitime de l'éditeur à mesurer l'audience de son service.<br>Durée : les totaux sont conservés 25 mois au maximum.</p>
 <h2>Qui reçoit ces données</h2>
 <p>Seul l'éditeur de Miette y a accès. Elles ne sont jamais vendues ni louées. Elles sont hébergées ou traitées par des prestataires techniques qui agissent pour son compte :</p>
-<ul><li>GitHub, Inc. (hébergement du site, États-Unis)</li><li>Supabase, Inc. (base de données : comptes clients, favoris, Offres Miette, demandes de référencement et statistiques de visite ; données stockées dans l'Union européenne, en Irlande)</li><li>Brevo (Sendinblue SAS, France : envoi des e-mails liés aux comptes, comme la réinitialisation du mot de passe, et des alertes « nouveau restaurant près de chez vous »)</li><li>FormSubmit (transmission par e-mail du formulaire « Référencer mon restaurant »)</li><li>Google (messagerie Gmail et affichage de la police Figtree, États-Unis)</li><li>jsDelivr (diffusion d'une bibliothèque technique nécessaire aux comptes)</li></ul>
-<p>Les transferts vers les États-Unis sont encadrés par le cadre de protection des données UE–États-Unis (Data Privacy Framework) ou par les clauses contractuelles types de la Commission européenne.</p>
+<ul><li>GitHub, Inc. (hébergement du site, États-Unis)</li><li>Supabase, Inc. (base de données : comptes clients, favoris, Offres Miette, demandes de référencement et statistiques de visite ; données stockées dans l'Union européenne, en Irlande)</li><li>Brevo (Sendinblue SAS, France : envoi des e-mails liés aux comptes, comme la réinitialisation du mot de passe, des alertes « nouveau restaurant près de chez vous » et de l'avis de nouvelle demande de référencement à l'éditeur)</li><li>Google (messagerie Gmail et affichage de la police Figtree, États-Unis)</li><li>jsDelivr (diffusion d'une bibliothèque technique nécessaire aux comptes)</li></ul>
+<p>Les transferts vers les États-Unis vers GitHub et Google reposent sur le cadre de protection des données UE–États-Unis (Data Privacy Framework), auquel ces sociétés ont adhéré. jsDelivr est un réseau mondial de diffusion de fichiers publics : il ne reçoit que les informations techniques de connexion (adresse IP, navigateur) nécessaires pour vous envoyer le fichier.</p>
 <h2>Vos droits</h2>
 <p>Vous pouvez à tout moment demander l'accès à vos données, leur rectification, leur effacement, leur portabilité, la limitation de leur traitement, ou vous opposer à leur traitement. Vous pouvez retirer votre consentement à tout moment, et donner des directives sur le sort de vos données après votre décès.</p>
 <p>Écrivez à ${MAIL}. Une réponse vous sera apportée dans un délai d'un mois. Si vous estimez que vos droits ne sont pas respectés, vous pouvez adresser une réclamation à la CNIL (cnil.fr).</p>
@@ -1205,10 +1204,12 @@ const LEGAL = {
 <p><b>Offre Miette (côté client).</b> Les établissements signalés par le badge « Offre Miette » offrent une attention aux clients qui disent venir de la part de Miette, selon les conditions propres à chaque établissement (par exemple une offre par table, avec un repas). L'offre ne comprend jamais de boisson alcoolisée. Elle est réservée aux titulaires d'un compte Miette, limitée à une fois par mois dans un même établissement et à trois établissements différents par mois, et validée sur place par l'établissement avec son code. L'établissement peut la modifier ou l'arrêter à tout moment.</p>
 
 <h2>Partie 2 · Conditions de vente des abonnements</h2>
+<p><b>Prestataire.</b> Les abonnements sont proposés par Soline VALADON EI (entrepreneur individuel), exerçant sous le nom commercial Miette - FoodClub, 33 rue de l'Atlantique, 17530 Arvert, SIRET 948 614 094 00027.</p>
 <p><b>Forfaits.</b> Miette Essentiel (34,90 € par mois), Miette Visibilité (49,90 € par mois) et Miette Premium (79,90 € par mois). TVA non applicable, article 293 B du CGI, dont le contenu est détaillé sur la page « Devenir partenaire ». Les mêmes forfaits s'appliquent aux foodtrucks.</p>
 <p><b>Souscription.</b> L'abonnement est conclu après échange avec l'éditeur, par la signature d'un bon de commande ou l'acceptation écrite de ces conditions par e-mail.</p>
+<p><b>Droit de rétractation.</b> Lorsque l'abonnement est signé en dehors des locaux de l'éditeur (par exemple dans l'établissement) avec un établissement qui emploie cinq salariés au plus, et que ce contrat n'entre pas dans le champ de son activité principale, l'établissement dispose d'un délai de 14 jours à compter de la signature pour se rétracter, sans avoir à donner de motif ni à payer de pénalité (articles L221-3 et L221-18 du Code de la consommation). Pour l'exercer, il suffit d'envoyer avant la fin de ce délai le formulaire ci-dessous, ou toute déclaration claire, par e-mail à ${MAIL} ou par courrier au 33 rue de l'Atlantique, 17530 Arvert. Les sommes déjà versées sont remboursées dans les 14 jours suivant la rétractation. Si l'établissement a demandé expressément que sa fiche soit mise en ligne avant la fin du délai, il reste redevable de la part de l'abonnement correspondant à la période écoulée jusqu'à sa rétractation (article L221-25).</p>
 <p><b>Durée et résiliation.</b> L'abonnement est sans engagement de durée. Il démarre à la mise en ligne de la fiche et se poursuit de mois en mois. Il peut être résilié à tout moment par e-mail, avec un préavis d'un mois : le mois en cours au moment de la demande et le mois de préavis restent dus. Un échange personnel a lieu au bout d'un an.</p>
-<p><b>Paiement.</b> L'abonnement est payable chaque mois, par virement permanent mis en place par l'établissement. Une facture est émise chaque mois. TVA non applicable, article 293 B du CGI. En cas de retard de paiement, des pénalités au taux légal et l'indemnité forfaitaire de 40 € pour frais de recouvrement prévue par l'article L441-10 du Code de commerce sont applicables ; la fiche peut être suspendue après une relance restée sans réponse pendant 15 jours.</p>
+<p><b>Paiement.</b> L'abonnement est payable d'avance, chaque mois, au plus tard le 5 du mois concerné, par virement permanent mis en place par l'établissement. Une facture est émise chaque mois. TVA non applicable, article 293 B du CGI. Aucun escompte n'est accordé en cas de paiement anticipé. Tout retard de paiement entraîne de plein droit, dès le lendemain de la date d'échéance, des pénalités de retard égales à trois fois le taux d'intérêt légal, ainsi qu'une indemnité forfaitaire de 40 € pour frais de recouvrement (articles L441-10 et D441-5 du Code de commerce). La fiche peut être suspendue après une relance restée sans réponse pendant 15 jours.</p>
 <p><b>Contenu fourni par l'établissement.</b> L'établissement fournit sa carte, ses photos, ses horaires et ses coordonnées. Il garantit qu'il détient les droits sur ces éléments et autorise Miette à les publier sur le site et sur ses réseaux sociaux pendant la durée de l'abonnement. Il reste responsable de l'exactitude de ses prix et informations.</p>
 <p><b>Mises à jour.</b> Les modifications sont envoyées par e-mail à ${MAIL}. Une mise à jour correspond à une carte entière (changement de saison, menu spécial…) : 2 par an pour Essentiel, 4 pour Visibilité, 12 pour Premium. La correction d'une simple erreur est gratuite et ne compte pas dans ce nombre. Les mises à jour sont mises en ligne dans un délai de 7 jours au maximum après réception. Le rafraîchissement graphique d'une carte est une option sur devis.</p>
 <p><b>Places Premium.</b> Le nombre d'établissements Premium est limité à 10. Au-delà, les demandes sont placées sur liste d'attente, par ordre d'arrivée.</p>
@@ -1219,7 +1220,33 @@ const LEGAL = {
 <p><b>Responsabilité.</b> L'éditeur s'engage à mettre en œuvre les moyens nécessaires à la bonne diffusion de la fiche, sans garantie d'un nombre de visites ou de clients. Il ne peut être tenu responsable d'une interruption temporaire du site.</p>
 <p><b>Résiliation pour manquement.</b> En cas de manquement grave de l'une des parties, l'autre peut résilier l'abonnement après une mise en demeure restée sans effet pendant 15 jours.</p>
 <p><b>Données personnelles.</b> Voir la <a href="/confidentialite/">politique de confidentialité</a>.</p>
-<p><b>Droit applicable.</b> Ces conditions sont soumises au droit français. En cas de litige, une solution amiable sera recherchée avant toute action. À défaut, le litige sera porté devant les juridictions compétentes de La Rochelle.</p>`]
+<p><b>Droit applicable.</b> Ces conditions sont soumises au droit français. En cas de litige, une solution amiable sera recherchée avant toute action. À défaut, le litige sera porté devant les juridictions compétentes de La Rochelle, sous réserve des règles impératives applicables aux établissements bénéficiant du droit de rétractation.</p>
+<h2>Annexe · Formulaire de rétractation</h2>
+<p class="muted">À compléter et renvoyer uniquement si vous souhaitez vous rétracter du contrat, dans les cas prévus à l'article « Droit de rétractation ».</p>
+<div style="border:1.5px dashed var(--line,#e7d6c3);border-radius:14px;padding:16px 18px">
+<p>À l'attention de Soline VALADON EI, Miette - FoodClub, 33 rue de l'Atlantique, 17530 Arvert · ${MAIL}</p>
+<p>Je / nous (*) vous notifie / notifions (*) par la présente ma / notre (*) rétractation du contrat portant sur la prestation de services ci-dessous :</p>
+<ul><li>Abonnement Miette (forfait : …………………………)</li><li>Commandé le : …………………………</li><li>Nom de l'établissement et du signataire : …………………………</li><li>Adresse : …………………………</li><li>Signature (uniquement en cas d'envoi sur papier) : …………………………</li><li>Date : …………………………</li></ul>
+<p class="muted">(*) Rayez la mention inutile.</p></div>`],
+ classement:["Fonctionnement et classement des fiches",`${MAJ}
+<p>Cette page explique quels établissements apparaissent sur Miette et dans quel ordre, conformément à l'article L111-7 du Code de la consommation.</p>
+<h2>Qui apparaît sur Miette</h2>
+<p>Miette ne présente que des <b>établissements partenaires</b> : des restaurants et foodtrucks qui ont souscrit un abonnement payant (forfaits Essentiel, Visibilité ou Premium) ou qui bénéficient de l'offre de lancement. Miette n'est donc pas un recensement complet : beaucoup d'établissements de Charente-Maritime n'y figurent pas.</p>
+<p>Une fiche est publiée à la signature du contrat, une fois les informations de l'établissement reçues. Elle est retirée à la fin de l'abonnement, en cas d'impayé resté sans réponse 15 jours après une relance, en cas de manquement grave aux <a href="/conditions-generales/">conditions générales</a>, ou si l'établissement ferme définitivement.</p>
+<h2>Ordre d'affichage</h2>
+<ul>
+<li><b>Annuaire</b> : les fiches « À la une » apparaissent en premier, puis toutes les autres par ordre alphabétique. La recherche et les filtres (commune, cuisine, prix, Offre Miette…) réduisent la liste sans changer cet ordre.</li>
+<li><b>Carrousel « À la une » de l'accueil</b> : il ne présente que les fiches « À la une », dans un ordre tiré au hasard à chaque visite.</li>
+<li><b>Grand bandeau de l'accueil</b> : quand il est affiché, il présente des fiches tirées au hasard parmi tous les établissements partenaires.</li>
+<li><b>Foodtrucks</b> : les foodtrucks « À la une » apparaissent en premier.</li>
+<li><b>« Près de chez vous » (compte client)</b> : les établissements à moins de 25 km de la commune indiquée, les plus récents d'abord.</li>
+</ul>
+<h2>Mises en avant payantes</h2>
+<p>Le badge <b>« À la une · annonce »</b> signale une mise en avant payante : il correspond au forfait Premium (10 places au maximum). C'est la seule façon dont le prix payé par un établissement influence son classement. Le badge « Offre Miette » signale seulement que l'établissement offre une attention aux membres ; il ne change pas l'ordre d'affichage.</p>
+<h2>Ni notes ni avis</h2>
+<p>Miette ne publie ni notes ni avis de clients. Les informations des fiches (carte, prix, horaires, photos) sont fournies par les établissements et vérifiées à la date indiquée sur chaque fiche.</p>
+<h2>Contact</h2>
+<p>Pour toute question sur le classement : ${MAIL}.</p>`]
 };
 function pageLegal(k){
   const [t,body]=LEGAL[k];
@@ -1228,7 +1255,7 @@ function pageLegal(k){
 
 /* ---------- Routeur ---------- */
 const TITLES = {accueil:"Miette - FoodClub · Restaurants de Charente-Maritime",annuaire:"Annuaire des restaurants · Miette",partenaire:"Devenir partenaire · Miette"};
-const PATHKEY={"":"accueil","annuaire":"annuaire","partenaire":"partenaire","foodtrucks":"foodtrucks","compte":"compte","mentions-legales":"mentions","confidentialite":"confidentialite","cookies":"cookies","conditions-generales":"cgv"};
+const PATHKEY={"":"accueil","annuaire":"annuaire","partenaire":"partenaire","foodtrucks":"foodtrucks","compte":"compte","mentions-legales":"mentions","confidentialite":"confidentialite","cookies":"cookies","conditions-generales":"cgv","classement":"classement"};
 function route(){
   const parts=location.pathname.replace(/index\.html$/,"").split("/").filter(Boolean);
   const hash=(location.hash||"").replace("#","");
