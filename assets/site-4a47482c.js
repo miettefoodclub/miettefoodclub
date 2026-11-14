@@ -556,7 +556,7 @@ function planCard(p,hot){
     [true,`${p.photos} photos du restaurant et des plats`],
     [true,`${p.updates} mises à jour de la carte par an${p.updates===12?" (1 par mois)":""}`],
     [p.links,"Liens vers votre site, vos réseaux et la réservation"],
-    [p.key!=="essentiel", p.key==="premium"?"1 publication dédiée par mois + 2 apparitions collectives sur Instagram et TikTok":"1 apparition par mois dans une publication collective Instagram et TikTok"],
+    [p.key!=="essentiel", p.key==="premium"?"1 publication dédiée par mois + 2 apparitions collectives sur Instagram, TikTok et Facebook":"1 apparition par mois dans une publication collective sur Instagram, TikTok et Facebook"],
     [p.carousel,"Place dans le carrousel « À la une » de l'accueil"],
     [p.key==="premium","Position prioritaire dans l'annuaire + badge « À la une »"],
     [true,"Rapport de statistiques par mail chaque trimestre"]
@@ -601,7 +601,7 @@ function pagePartner(){
           <tr><th scope="row">Photos du restaurant et des plats</th><td>4</td><td>6</td><td>8</td></tr>
           <tr><th scope="row">Lien site web, réseaux ou réservation</th><td>—</td><td class="yes">Oui</td><td class="yes">Oui</td></tr>
           <tr><th scope="row">Mises à jour de la carte par an</th><td>2</td><td>4</td><td>12</td></tr>
-          <tr><th scope="row">Instagram et TikTok</th><td>—</td><td>1 apparition collective / mois</td><td>1 publication dédiée + 2 collectives / mois</td></tr>
+          <tr><th scope="row">Instagram, TikTok et Facebook</th><td>—</td><td>1 apparition collective / mois</td><td>1 publication dédiée + 2 collectives / mois</td></tr>
           <tr><th scope="row">Carrousel de l'accueil</th><td>—</td><td>—</td><td class="yes">Présence continue</td></tr>
           <tr><th scope="row">Priorité dans l'annuaire + badge « À la une »</th><td>—</td><td>—</td><td class="yes">Oui</td></tr>
           <tr><th scope="row">Rapport de statistiques trimestriel</th><td class="yes">Oui</td><td class="yes">Oui</td><td class="yes">Oui</td></tr>
@@ -665,7 +665,7 @@ function pagePartner(){
         <div class="launch-txt">
           <p class="launch-eyebrow">Offre de lancement · phase test</p>
           <h3>2 mois offerts sur Miette Visibilité</h3>
-          <p>Les ${TEST.spots} premiers restaurants qui rejoignent Miette testent gratuitement le forfait <b>Miette Visibilité</b> (49,90 € par mois) pendant 2 mois : fiche complète, 6 photos, liens vers votre site et vos réseaux, apparition sur Instagram et TikTok. À la fin du test, vous êtes libre : continuer avec le forfait de votre choix, ou arrêter, sans aucune obligation (votre fiche est alors retirée du site).</p>
+          <p>Les ${TEST.spots} premiers restaurants qui rejoignent Miette testent gratuitement le forfait <b>Miette Visibilité</b> (49,90 € par mois) pendant 2 mois : fiche complète, 6 photos, liens vers votre site et vos réseaux, apparition sur Instagram, TikTok et Facebook. À la fin du test, vous êtes libre : continuer avec le forfait de votre choix, ou arrêter, sans aucune obligation (votre fiche est alors retirée du site).</p>
         </div>
         <div class="launch-side">
           <p class="launch-n"><b>${TEST.spots-TEST.taken}</b> place${TEST.spots-TEST.taken>1?"s":""} sur ${TEST.spots}</p>
@@ -1213,7 +1213,7 @@ const LEGAL = {
 <p><b>Contenu fourni par l'établissement.</b> L'établissement fournit sa carte, ses photos, ses horaires et ses coordonnées. Il garantit qu'il détient les droits sur ces éléments et autorise Miette à les publier sur le site et sur ses réseaux sociaux pendant la durée de l'abonnement. Il reste responsable de l'exactitude de ses prix et informations.</p>
 <p><b>Mises à jour.</b> Les modifications sont envoyées par e-mail à ${MAIL}. Une mise à jour correspond à une carte entière (changement de saison, menu spécial…) : 2 par an pour Essentiel, 4 pour Visibilité, 12 pour Premium. La correction d'une simple erreur est gratuite et ne compte pas dans ce nombre. Les mises à jour sont mises en ligne dans un délai de 7 jours au maximum après réception. Le rafraîchissement graphique d'une carte est une option sur devis.</p>
 <p><b>Places Premium.</b> Le nombre d'établissements Premium est limité à 10. Au-delà, les demandes sont placées sur liste d'attente, par ordre d'arrivée.</p>
-<p><b>Réseaux sociaux.</b> Les publications Instagram et TikTok prévues par les forfaits sont réalisées par l'éditeur, qui en choisit la forme et la date.</p>
+<p><b>Réseaux sociaux.</b> Les publications Instagram, TikTok et Facebook prévues par les forfaits sont réalisées par l'éditeur, qui en choisit la forme et la date.</p>
 <p><b>Offre Miette (côté établissement).</b> La participation est facultative. L'établissement définit avec l'éditeur ce qu'il offre et à quelles conditions. Il s'engage à honorer l'offre affichée sur sa fiche tant qu'il ne demande pas sa modification. Trois règles s'appliquent : les conditions de l'offre sont clairement affichées sur la fiche de l'établissement ; l'offre ne comprend jamais de boisson alcoolisée ; c'est l'établissement qui offre et qui en supporte le coût, Miette n'intervient ni dans l'offre ni dans son paiement.</p>
 <p><b>Offre de lancement.</b> Les 15 premiers établissements inscrits bénéficient de 2 mois gratuits sur le forfait Miette Visibilité. À la fin de ces 2 mois, l'établissement n'a aucune obligation de souscrire un abonnement. Les 2 mois gratuits commencent à la signature du contrat. Si l'établissement ne souscrit pas d'abonnement à la fin de ces 2 mois, sa fiche est retirée du site. L'offre de lancement est limitée à une seule fois par établissement.</p>
 <p><b>Statistiques.</b> Un rapport de statistiques est envoyé chaque trimestre par e-mail. Ces chiffres sont donnés à titre indicatif.</p>
