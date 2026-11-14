@@ -1,0 +1,22 @@
+name: Veille Supabase et site
+# Chaque matin : interroge la base Supabase (ce qui l'empêche de se mettre en pause
+# faute d'activité) et vérifie que le site répond. En cas de problème, le passage échoue
+# et apparaît en rouge dans l'onglet Actions du dépôt.
+on:
+  schedule:
+    - cron: "17 6 * * *"
+  workflow_dispatch:
+jobs:
+  veille:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Base Supabase
+        run: |
+          code=$(curl -s -o /tmp/r -w "%{http_code}" -H "apikey: sb_publishable_kedTGgQ9QJoQK4xlDXn90Q_CQueh0Uz" "https://ioqjtpixnclfmvzzuepb.supabase.co/rest/v1/profiles?select=id&limit=1")
+          echo "Supabase : HTTP $code"
+          test "$code" = "200"
+      - name: Site miettefoodclub.com
+        run: |
+          code=$(curl -s -o /dev/null -w "%{http_code}" https://miettefoodclub.com/)
+          echo "Site : HTTP $code"
+          test "$code" = "200"
